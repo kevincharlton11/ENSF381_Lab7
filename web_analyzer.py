@@ -1,5 +1,5 @@
 import requests 
-
+import re
 from bs4 import BeautifulSoup 
 
 url = "https://en.wikipedia.org/wiki/University_of_Calgary" 
@@ -34,4 +34,30 @@ for i in p_occurances:
     count_p = count_p + 1
 
 
-print(count_p)
+textContent = soup.get_text()
+textContent = textContent.lower()
+
+words = re.findall(r'\b\w+\b', textContent)
+wordFrequency = {}
+
+for word in words:
+    if(word in wordFrequency.keys()):
+        wordFrequency[word] +=1
+    else:
+        wordFrequency[word] = 1
+
+top5 = {}
+
+findTopFive = wordFrequency
+
+for i in range(5):
+    maxKey = ''
+    maxValue = 0
+    for key, value in findTopFive.items():
+        if(value>maxValue):
+            maxValue = value
+            maxKey = key
+    top5[maxKey] = [maxValue]
+    findTopFive.pop(maxKey)
+
+
