@@ -1,6 +1,7 @@
 import requests 
 import re
 from bs4 import BeautifulSoup 
+import matplotlib.pyplot as plt
 
 url = "https://en.wikipedia.org/wiki/University_of_Calgary" 
 headers = { 
@@ -48,7 +49,7 @@ for word in words:
 
 top5 = {}
 
-findTopFive = wordFrequency
+findTopFive = wordFrequency.copy()
 
 for i in range(5):
     maxKey = ''
@@ -61,3 +62,39 @@ for i in range(5):
     findTopFive.pop(maxKey)
 
 
+keyWord = input("Enter what word you would like to know how many times it appears in the document: ")
+try:
+    print(f"{keyWord} appears {wordFrequency[keyWord]} times")
+except:
+    print("Word Not Found")
+
+
+
+labels = ['Headings', 'Links', 'Paragraphs']
+values = [count_h, count_a, count_p]
+
+plt.bar(labels, values)
+
+plt.title('Group 20') 
+plt.ylabel('Count')
+plt.xlabel('HTML Elements')
+
+plt.show()
+
+
+longest_paragraph = ''
+
+for p in p_occurances:
+    current = p.get_text().split()
+
+    if len(p.get_text().split()) < 5:
+        continue
+
+    if len(current) > len(longest_paragraph):
+        longest_paragraph = current
+
+
+
+longest_paragraph_words = " ".join(longest_paragraph)
+print(f"Longest paragraph: {longest_paragraph_words}")
+print(f"This paragraph is {len(longest_paragraph)} word(s) long")
